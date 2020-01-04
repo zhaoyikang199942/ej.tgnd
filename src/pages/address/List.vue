@@ -32,9 +32,6 @@
       :visible.sync="visible"
       width="60%">
       <el-form :model="form" label-width="80px">
-        <el-form-item label="顾客编号">
-          <el-input v-model="form.customerId"></el-input>
-        </el-form-item>
         <el-form-item label="顾客省份">
           <el-input v-model="form.province"></el-input>
         </el-form-item>
@@ -43,13 +40,13 @@
         </el-form-item> 
         <el-form-item label="顾客地区">
           <el-input v-model="form.area"></el-input>
-        </el-form-item> -->
+        </el-form-item> 
         <el-form-item label="顾客地址">
           <el-input v-model="form.address"></el-input>
-        </el-form-item> -->
+        </el-form-item> 
         <el-form-item label="顾客电话">
           <el-input v-model="form.telephone"></el-input>
-        </el-form-item> -->
+        </el-form-item> 
       </el-form>
 
       <span slot="footer" class="dialog-footer">
