@@ -1,6 +1,5 @@
 <template>
     <div>
-
     <el-table :data="orders">
         <el-table-column prop="id" label="订单编号"></el-table-column>
         <el-table-column prop="orderTime" label="下单时间"></el-table-column>

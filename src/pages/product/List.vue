@@ -33,7 +33,6 @@
             :title="title"
             :visible.sync="visible"
             width="60%">
-            ---{{form}}
             <el-form label-width="80px">
                 <el-form-item label="名称">
                     <el-input  v-model="form.name"></el-input>
@@ -42,15 +41,16 @@
                     <el-input v-model="form.price"></el-input>
                 </el-form-item>
                <el-form-item label="所属栏目">
-                    <el-select v-model="form.status" placeholder="请选择">
-                        <el-option v-for="item in options"
-                            :key="item.value" :label="item.name"
-                            :value="item.parentId">
+                    <el-select v-model="form.categroyId" placeholder="请选择">
+                        <el-option v-for="form in options"
+                            :key="form.id" 
+                            :label="form.name"
+                            :value="form.id">
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="介绍">
-                    <el-input v-model="form.description"></el-input>
+                <el-form-item label="描述">
+                    <el-input type="textarea" v-model="form.description"></el-input>
                 </el-form-item>
                 <el-form-item label="产品主图">
                     <el-input v-model="form.categoryId"></el-input>
@@ -73,15 +73,15 @@ export default {
            title:"录入产品信息",
             visible:false,
             products:[],
-            form:{
-                type:"product"
-                 }
+            options:[],
+            form:{}
                  
         }
     },
     created(){
         // 在页面加载出来时加载数据
         this.loadData();
+        this.loadCategory();
     },
     methods:{
         // 提交
@@ -103,6 +103,13 @@ export default {
             })
         },
         // 重载员工数据
+        loadCategory(){
+            let url= "http://localhost:6677/category/findAll"
+            request.get(url).then((response)=>{
+                this.options=response.data;
+            })
+            // 箭头函数的this指向外部函数中的this
+        },
         loadData(){
             let url= "http://localhost:6677/product/findAll"
             request.get(url).then((response)=>{
@@ -121,19 +128,26 @@ export default {
         closeModalHander(){
             this.visible=false;
         },
-        toDeleteHandler(id){
-             this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
-          });
-        })
-
-        },
+         toDeleteHandler(id){
+      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        // 调用后台接口，完成删除操作
+        let url="http://localhost:6677/product/deleteById?id="+id;
+        request.get(url).then((response)=>{
+          // 刷新数据
+          this.loadData();
+          // 提示结果
+        
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        });
+       })
+      })
+    },
         toUpdateHandler(row){
             this.title="修改产品信息";
             this.visible="true";
