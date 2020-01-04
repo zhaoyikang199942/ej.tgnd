@@ -25,9 +25,9 @@ import '@/permission' // permission control
  */
 import { mockXHR } from '../mock'
 // if (process.env.NODE_ENV === 'production') {
-//   mockXHR()
+// mockXHR()
 // }
-
+mockXHR()
 // set ElementUI lang to EN
 Vue.use(ElementUI, { locale })
 // 如果想要中文版 element-ui，按如下方式声明
