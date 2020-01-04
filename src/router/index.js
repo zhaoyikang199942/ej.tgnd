@@ -101,6 +101,39 @@ export const constantRoutes = [
         meta: { title: '产品管理', icon: 'user' }
       }
     ]
+  },{
+    path: '/order',
+    component: Layout,
+    children: [
+      {
+        path: 'list',
+        name: 'orderList',
+        component: () => import('@/pages/order/List'),
+        meta: { title: '订单管理', icon: 'user' }
+      }
+    ]
+  },{
+    path: '/comment',
+    component: Layout,
+    children: [
+      {
+        path: 'list',
+        name: 'commentList',
+        component: () => import('@/pages/comment/List'),
+        meta: { title: '评论管理', icon: 'user' }
+      }
+    ]
+  },{
+    path: '/address',
+    component: Layout,
+    children: [
+      {
+        path: 'list',
+        name: 'addressList',
+        component: () => import('@/pages/address/List'),
+        meta: { title: '地址管理', icon: 'user' }
+      }
+    ]
   },
   
 
