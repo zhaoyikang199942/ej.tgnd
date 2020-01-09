@@ -10,10 +10,11 @@
         <!-- 表格 -->
         <el-table :data="products">
         <el-table-column prop="id" label="编号" fixed="left"></el-table-column>
-        <el-table-column prop="name" label="产品名称" fixed="left"></el-table-column>
+        <el-table-column width="150" prop="name" label="产品名称" fixed="left"></el-table-column>
         <el-table-column prop="price" label="价格" ></el-table-column>
         <el-table-column prop="description" label="描述"></el-table-column>
-        <el-table-column prop="categoryId" label="所属产品" ></el-table-column>
+        <el-table-column prop="categoryId" label="所属分类" ></el-table-column>
+        <el-table-column width="650" prop="photo" label="照片" ></el-table-column>
         <el-table-column label="操作" fixed="right">
             <template v-slot="slot">
                 <a href="" @click.prevent="toDeleteHandler(slot.row.id)">删除</a>
@@ -52,8 +53,16 @@
                 <el-form-item label="描述">
                     <el-input type="textarea" v-model="form.description"></el-input>
                 </el-form-item>
-                <el-form-item label="产品主图">
-                    <el-input v-model="form.categoryId"></el-input>
+                <el-form-item label="图片">
+                    <el-upload
+                       class="upload-demo"
+                       action="https://134.175.154.93:6677/file/upload"
+                       :file-list="fileList"
+                       :on-success="uploadSuccessHandler"
+                       list-type="picture">
+                       <el-button size="small" type="primary">点击上传</el-button>
+                       <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                     </el-upload>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
@@ -74,8 +83,8 @@ export default {
             visible:false,
             products:[],
             options:[],
-            form:{}
-                 
+            form:{},
+            fileList:[]     
         }
     },
     created(){
@@ -84,6 +93,11 @@ export default {
         this.loadCategory();
     },
     methods:{
+        uploadSuccessHandler(response){
+            let photo="http://134.175.154.93:8888/group1/"+response.data.id
+            // 上传成功事件处理函数
+            this.form.photo=photo
+        },
         // 提交
         submitHandler(){
             let url = "http://localhost:6677/product/saveOrUpdate";
@@ -124,6 +138,8 @@ export default {
             })
             this.title="添加产品信息",
             this.visible=true;
+            this.fileList=[];
+            this.form={};
         },
         closeModalHander(){
             this.visible=false;
@@ -150,6 +166,8 @@ export default {
     },
         toUpdateHandler(row){
             this.title="修改产品信息";
+            this.form=row;
+            this.fileList;
             this.visible="true";
         }
     }
